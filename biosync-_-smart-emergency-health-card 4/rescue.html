@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>RESCUE PROTOCOL | BioSync Medical Identity</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --danger: #ef4444;
+      --warning: #facc15;
+      --success: #22c55e;
+      --bg: #000000;
+    }
+    body { 
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: #ffffff;
+      margin: 0;
+      padding-bottom: 20rem;
+      -webkit-font-smoothing: antialiased;
+    }
+    .flash-critical { animation: flash 1s infinite; }
+    @keyframes flash { 0%, 100% { background-color: var(--danger); } 50% { background-color: #7f1d1d; } }
+    .label-caps { font-size: 0.8rem; font-weight: 900; letter-spacing: 0.25em; text-transform: uppercase; color: #64748b; margin-bottom: 0.5rem; display: block; }
+    .data-text { font-weight: 900; font-size: 2rem; line-height: 1.1; letter-spacing: -0.03em; }
+    .blood-giant { font-size: 10rem; font-weight: 900; line-height: 1; color: var(--danger); text-shadow: 0 0 40px rgba(239, 68, 68, 0.4); }
+    .section-card { border-radius: 2.5rem; padding: 2.5rem; border-width: 4px; }
+    .section-red { background-color: rgba(239, 68, 68, 0.12); border-color: var(--danger); }
+    .section-yellow { background-color: rgba(250, 204, 21, 0.12); border-color: var(--warning); }
+    .section-green { background-color: rgba(34, 197, 94, 0.12); border-color: var(--success); }
+    #loadingView { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle at center, #1e1b4b 0%, #000 100%); }
+    .pulse-scan { width: 140px; height: 140px; border: 6px solid var(--danger); border-radius: 50%; border-top-color: transparent; animation: spin 0.8s linear infinite; margin-bottom: 2rem; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <div id="loadingView">
+    <div class="pulse-scan"></div>
+    <h2 class="text-white font-black text-2xl uppercase tracking-widest">BioSync Secure</h2>
+    <p class="text-slate-400 font-bold mt-4">Decrypting Medical Records...</p>
+  </div>
+
+  <div id="mainContent" class="hidden animate-in fade-in duration-500">
+    <div id="alertBanner" class="hidden flash-critical py-8 px-6 sticky top-0 z-[100] text-center shadow-2xl">
+      <h3 id="alertMsg" class="text-white font-black text-2xl uppercase tracking-[0.25em]">⚠️ CRITICAL MEDICAL ALERT ⚠️</h3>
+    </div>
+
+    <main class="container mx-auto max-w-lg px-6 py-12 space-y-12">
+      <!-- Identity Section -->
+      <section class="bg-zinc-900 rounded-[3.5rem] p-12 text-center border-2 border-white/5 shadow-2xl">
+        <span class="label-caps">Identity</span>
+        <h1 id="name" class="text-6xl font-black mb-8 tracking-tighter uppercase leading-none">--</h1>
+        <div class="flex justify-around mb-12 border-y border-white/10 py-8">
+          <div><span class="label-caps">Age</span><p id="age" class="data-text">--</p></div>
+          <div><span class="label-caps">Blood</span><p id="bloodGroup" class="text-red-600 font-black text-5xl">--</p></div>
+        </div>
+      </section>
+
+      <!-- Physical Metrics Block -->
+      <section class="bg-blue-600/10 border-4 border-blue-600 p-10 rounded-[2.5rem]">
+        <span class="label-caps !text-blue-500">Physical Metrics & BMI</span>
+        <div class="grid grid-cols-3 gap-6 text-center mt-6">
+          <div>
+            <span class="label-caps !text-[10px]">Height</span>
+            <p id="htDisplay" class="font-black text-2xl">--</p>
+          </div>
+          <div>
+            <span class="label-caps !text-[10px]">Weight</span>
+            <p id="wtDisplay" class="font-black text-2xl">--</p>
+          </div>
+          <div>
+            <span class="label-caps !text-[10px]">BMI</span>
+            <p id="bmiDisplay" class="font-black text-3xl text-blue-500">--</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Addiction History Block -->
+      <section id="addictionSection" class="bg-zinc-900 p-10 rounded-[2.5rem] border-2 border-white/10 shadow-xl">
+        <span class="label-caps mb-6 text-slate-400">Addiction & Usage Profile</span>
+        <div id="addictionGrid" class="grid grid-cols-1 gap-4"></div>
+      </section>
+
+      <!-- Medical Data Blocks -->
+      <div class="space-y-8">
+        <section id="alCard" class="section-card section-red">
+          <span class="label-caps !text-red-500">Allergies</span>
+          <p id="al" class="data-text text-red-50">--</p>
+        </section>
+        <section id="ccCard" class="section-card section-yellow">
+          <span class="label-caps !text-yellow-500">Chronic Conditions</span>
+          <p id="cc" class="data-text text-yellow-50">--</p>
+        </section>
+        <section class="section-card section-green">
+           <span class="label-caps !text-green-500">Current Medications</span>
+           <p id="m" class="data-text text-green-50">--</p>
+        </section>
+      </div>
+    </main>
+
+    <div class="fixed bottom-0 left-0 right-0 p-8 bg-black/95 backdrop-blur-3xl border-t-2 border-white/10 z-[200]">
+      <div class="container mx-auto max-w-lg flex flex-col space-y-4">
+        <a id="smsBtn" href="sms:?body=Emergency" class="w-full bg-yellow-400 text-black py-7 rounded-[2rem] font-black text-2xl text-center">SEND SOS SMS</a>
+        <a id="callBtn" href="tel:" class="w-full bg-red-600 text-white py-8 rounded-[2rem] font-black text-3xl text-center shadow-2xl">CALL FOR RESCUE</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const getVal = (k) => decodeURIComponent(params.get(k) || '');
+
+    function renderAddiction() {
+      const grid = document.getElementById('addictionGrid');
+      const profile = {
+        'Alcohol': getVal('alc'),
+        'Drugs': getVal('drg'),
+        'Smoking': getVal('smk'),
+        'Painkillers': getVal('pnd')
+      };
+
+      let allNo = true;
+      let html = '';
+      
+      for (const [key, val] of Object.entries(profile)) {
+        if (!val || val === 'No') continue;
+        allNo = false;
+        const colorClass = val === 'Yes' ? 'bg-red-600/20 text-red-500 border-red-600/30' : 'bg-yellow-600/20 text-yellow-500 border-yellow-600/30';
+        html += `<div class="p-5 rounded-2xl border ${colorClass} flex justify-between items-center">
+          <span class="font-black uppercase tracking-widest text-sm">${key}</span>
+          <span class="font-black uppercase tracking-widest text-lg">${val}</span>
+        </div>`;
+      }
+
+      if (allNo) {
+        grid.innerHTML = `<div class="p-8 bg-green-600/10 border-2 border-green-600 rounded-2xl text-center">
+          <span class="text-green-500 font-black uppercase tracking-widest">None Reported</span>
+        </div>`;
+      } else {
+        grid.innerHTML = html;
+        if (Object.values(profile).includes('Yes')) {
+          document.getElementById('alertBanner').classList.remove('hidden');
+          document.getElementById('alertMsg').textContent = '⚠️ CRITICAL ALERT: ACTIVE SUBSTANCE USE ⚠️';
+        }
+      }
+    }
+
+    setTimeout(() => {
+      document.getElementById('loadingView').classList.add('hidden');
+      document.getElementById('mainContent').classList.remove('hidden');
+      
+      const name = getVal('n');
+      const blood = getVal('bg');
+      document.getElementById('name').textContent = name || 'UNKNOWN PATIENT';
+      document.getElementById('bloodGroup').textContent = blood || '--';
+      document.getElementById('age').textContent = getVal('a') || '--';
+      document.getElementById('al').textContent = getVal('al') || 'NONE';
+      document.getElementById('cc').textContent = getVal('cc') || 'NONE';
+      document.getElementById('m').textContent = getVal('m') || 'NONE';
+
+      document.getElementById('htDisplay').textContent = getVal('ht') ? getVal('ht') + ' cm' : '--';
+      document.getElementById('wtDisplay').textContent = getVal('wt') ? getVal('wt') + ' kg' : '--';
+      document.getElementById('bmiDisplay').textContent = getVal('bmi') || '--';
+
+      const contact = getVal('ec').replace(/\D/g, '');
+      if (contact) {
+        document.getElementById('callBtn').href = `tel:${contact}`;
+        const sms = `BioSync Rescue Protocol: ${name} is in an emergency. Blood: ${blood}. Contact immediate!`;
+        document.getElementById('smsBtn').href = `sms:${contact}?body=${encodeURIComponent(sms)}`;
+      }
+
+      renderAddiction();
+    }, 800);
+  </script>
+</body>
+</html>
