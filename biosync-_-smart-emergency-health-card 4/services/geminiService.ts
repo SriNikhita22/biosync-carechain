@@ -1,7 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { UserHealthData, TimelineEvent } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
 
 // Internal session cache to prevent redundant API calls
 const insightCache = new Map<string, string>();
